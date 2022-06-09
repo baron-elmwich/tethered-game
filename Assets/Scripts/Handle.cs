@@ -49,6 +49,7 @@ public class Handle : MonoBehaviour, IInteractable
         if (isInteractable && triggerEntered) 
         {
             isInteractable = false;
+            itemChild.gameObject.SetActive(false);
             anim.SetBool("isTurning", true);
             audioPlayer.PlayHandleClip();
             // Debug.Log("You turned the handle!");
@@ -60,6 +61,21 @@ public class Handle : MonoBehaviour, IInteractable
         {
             Debug.Log("Handle is not interactable.");
         }
+    }
+
+    public void ForceInteract() 
+    {
+        if (isInteractable) 
+        {
+            isInteractable = false;
+            anim.SetBool("isTurning", true);
+            audioPlayer.PlayHandleClip();
+            // Debug.Log("You turned the handle!");
+            if (fx != null) 
+            {
+                fx.Stop();
+            }
+        } 
     }
 
     public bool GetIsInteractable()

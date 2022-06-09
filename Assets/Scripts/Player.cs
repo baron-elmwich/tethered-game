@@ -80,6 +80,13 @@ public class Player : MonoBehaviour
         interactable.Interact();
     }
 
+    void OnPortal() 
+    {
+        InteractAllBags();
+        InteractAllHandles();
+        InteractAllSwitches();
+    }
+
     void OnTriggerEnter2D(Collider2D other) {
         if (other.gameObject.GetComponent<IInteractable>() != null) 
         {
@@ -194,6 +201,12 @@ public class Player : MonoBehaviour
             Destroy(greenChain.gameObject);
             Destroy(blueChain.gameObject);
             redChain.SetIsDissolvable(true);
+        } 
+        if (stage > 3) 
+        {
+            Destroy(greenChain.gameObject);
+            Destroy(blueChain.gameObject); 
+            Destroy(redChain.gameObject); 
         }
     }
 
@@ -204,4 +217,40 @@ public class Player : MonoBehaviour
         rb.gravityScale = 0f;
     }
 
+    void InteractAllBags()
+    {
+        Bag[] bags = FindObjectsOfType<Bag>();
+        if (bags.Length > 0) 
+        {
+            foreach (Bag b in bags) 
+            {
+                b.ForceInteract();
+            }
+        }
+    }
+
+    void InteractAllHandles()
+    {
+        Handle[] handles = FindObjectsOfType<Handle>();
+        if (handles.Length > 0) 
+        {
+            foreach (Handle h in handles) 
+            {
+                h.ForceInteract();
+            }
+        }
+    }
+
+    void InteractAllSwitches()
+    {
+        Switch[] switches = FindObjectsOfType<Switch>();
+        if (switches.Length > 0) 
+        {
+            foreach (Switch s in switches) 
+            {
+                s.ForceInteract();
+            }
+        }
+    }
+    
 }

@@ -45,7 +45,18 @@ public class Bag : MonoBehaviour, IInteractable
         if (!wasCollected && triggerEntered) 
         {
             wasCollected = true;
-            //Debug.Log("You picked up the bag!");
+            Debug.Log("You picked up the bag!");
+            audioPlayer.PlayBagClip();
+            Destroy(gameObject);
+        }
+    }
+
+    public void ForceInteract() 
+    {
+        if (!wasCollected) 
+        {
+            wasCollected = true;
+            Debug.Log("You picked up the bag!");
             audioPlayer.PlayBagClip();
             Destroy(gameObject);
         }

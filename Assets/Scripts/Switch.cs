@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class Switch : MonoBehaviour, IInteractable
 {
+    [SerializeField] bool showHelpKey = false;
     [SerializeField] TurnOff objectThatIsOn;
     [SerializeField] ParticleSystem burnerfx;
     [SerializeField] ParticleSystem smokefx;
     bool triggerEntered = false;
     bool isInteractable = true;
+    Transform itemChild;
     Animator anim;
 
     AudioPlayer audioPlayer;
@@ -20,6 +22,8 @@ public class Switch : MonoBehaviour, IInteractable
 
     void Start() 
     {
+        itemChild = transform.GetChild(0);
+        itemChild.gameObject.SetActive(false);
         anim = GetComponent<Animator>();
     }
 
@@ -29,12 +33,17 @@ public class Switch : MonoBehaviour, IInteractable
         {
             // Debug.Log("Player triggered switch!");
             triggerEntered = true;
+            if (showHelpKey && isInteractable) 
+            {
+                itemChild.gameObject.SetActive(true);
+            }
         }
     }
 
     void OnTriggerExit2D(Collider2D other) 
     {
         triggerEntered = false;
+        itemChild.gameObject.SetActive(false);
     }
 
     public void Interact() 
@@ -43,6 +52,7 @@ public class Switch : MonoBehaviour, IInteractable
         if (isInteractable && triggerEntered) 
         {
             isInteractable = false;
+            itemChild.gameObject.SetActive(false);
             //Debug.Log("You flipped the switch!");
             anim.SetBool("isFlipped", true);
             audioPlayer.PlaySwitchClip();
@@ -61,6 +71,27 @@ public class Switch : MonoBehaviour, IInteractable
         {
             Debug.Log("Switch is not interactable.");
         }
+    }
+
+    public void ForceInteract() 
+    {
+        if (isInteractable) 
+        {
+            isInteractable = false;
+            anim.SetBool("isFlipped", true);
+            audioPlayer.PlaySwitchClip();
+            if (objectThatIsOn != null) {
+                objectThatIsOn.gameObject.SetActive(false);
+            }
+            if (burnerfx != null) 
+            {
+                burnerfx.Stop();
+            }
+            if (smokefx != null) 
+            {
+                smokefx.Stop();
+            }
+        } 
     }
 
     public bool GetIsInteractable()
